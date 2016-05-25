@@ -21,26 +21,24 @@ getContributors(modulesFolder).then(authors => {
     process.exit(1);
 });
 
+const styleName = name => bold(cyan(name));
+const styleCount = count => yellow(count);
+const header = (authorName, authorEmail, packageCount) => (
+    `${styleName(authorName)} (${authorEmail}): ${styleCount(packageCount)}`
+);
+
 function printMinimal(authors) {
-    authors.forEach(({ author, packages }) => {
+    authors.forEach(({ authorEmail, authorName, packages }) => {
         const packageCount = packages.length;
-        console.log(`${prettyName(author)}: ${prettyCount(packageCount)}`);
+        console.log(header(authorName, authorEmail, packageCount));
     });
 }
 
 function printExtended(authors) {
-    authors.forEach(({ author, packages }) => {
+    authors.forEach(({ authorEmail, authorName, packages }) => {
         const packageCount = packages.length;
         const packagesList = packages.map(pkg => `\t${pkg}`).join('\n');
-        console.log(`${prettyName(author)}: ${prettyCount(packageCount)}`);
+        console.log(header(authorName, authorEmail, packageCount));
         console.log(packagesList);
     });
-}
-
-function prettyName(author) {
-    return bold(cyan(author));
-}
-
-function prettyCount(count) {
-    return yellow(count);
 }

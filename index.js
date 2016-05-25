@@ -21,7 +21,9 @@ function readAllPackages(paths) {
     return paths.map(path => {
         try {
             // Safeguard against malformed package.json's.
-            // Found in the test suite of npmconf
+            // Found in the test suite of npmconf.
+            // Also purposely using require here (sync), because the
+            // alternative is (async) readfile + (sync) JSON.parse
             return require(path)
         } catch(err) {
             return false;
@@ -30,21 +32,30 @@ function readAllPackages(paths) {
 }
 
 function aggregateAuthors(packages) {
-    return packages.reduce((authors, pkg) => {
+    const emailToName = {};
+
+    const authorStats = packages.reduce((authors, pkg) => {
         if (!pkg.user) return authors;
 
         const prior = authors[pkg.user.email];
         const pkgName = pkg.packageName;
+        emailToName[pkg.user.email] = pkg.user.name;
 
         authors[pkg.user.email] = prior ? [...prior, pkgName] : [pkgName];
         return authors;
     }, {});
+
+    return {
+        authorStats,
+        emailToName
+    };
 }
 
-function sortAuthorsDesc(authors) {
-    return Object.keys(authors).map(author => ({
-        author,
-        packages: authors[author]
+function sortAuthorsDesc({ authorStats, emailToName }) {
+    return Object.keys(authorStats).map(authorEmail => ({
+        authorEmail,
+        authorName: emailToName[authorEmail],
+        packages: authorStats[authorEmail]
     })).sort((a, b) => b.packages.length - a.packages.length);
 }
 
