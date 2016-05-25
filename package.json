@@ -1,0 +1,27 @@
+{
+  "name": "thankyou",
+  "version": "0.1.0",
+  "description": "Aggregate a list of all authors in your npm dependency tree",
+  "main": "index.js",
+  "bin": {
+    "thankyou": "cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "thanks"
+  ],
+  "author": "Andrew Levine",
+  "license": "MIT",
+  "dependencies": {
+    "chalk": "^1.1.3",
+    "minimist": "^1.2.0",
+    "ora": "^0.2.3",
+    "walkdir": "0.0.11"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DrewML/thankyou"
+  }
+}
