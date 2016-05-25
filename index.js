@@ -18,7 +18,15 @@ function collectPackageFiles(rootDir) {
 }
 
 function readAllPackages(paths) {
-    return paths.map(path => require(path));
+    return paths.map(path => {
+        try {
+            // Safeguard against malformed package.json's.
+            // Found in the test suite of npmconf
+            return require(path)
+        } catch(err) {
+            return false;
+        }
+    }).filter(path => path);
 }
 
 function aggregateAuthors(packages) {
