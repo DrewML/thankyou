@@ -1,6 +1,6 @@
 {
   "name": "thankyou",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Aggregate a list of all authors in your npm dependency tree",
   "main": "index.js",
   "bin": {
